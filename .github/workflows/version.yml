@@ -15,3 +15,6 @@ jobs:
           path: '/'
           file: 'VERSION'
           content: ${GITHUB_REF#refs/heads/}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Updated version to ${GITHUB_REF#refs/heads/}"
