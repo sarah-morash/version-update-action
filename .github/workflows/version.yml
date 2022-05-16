@@ -16,10 +16,9 @@ jobs:
         with:
           path: '/'
           file: 'VERSION'
-          content: ${GITHUB_REF#refs/heads/}
+          content: ${{ github.head_ref }}
       - name: setup git config
         run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
       - name: stage changed file
