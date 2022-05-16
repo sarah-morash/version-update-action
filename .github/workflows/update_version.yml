@@ -1,0 +1,37 @@
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - test/*
+
+jobs:
+  updateVersion:
+    name: update version file with latest version based on branch name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.base_ref }}
+          regex: '^test/(.*)'
+      - uses: 1arp/create-a-file-action@0.2
+        with:
+          path: '/'
+          file: 'VERSION'
+          content: ${{ steps.regex-match.outputs.group1 }}
+      - name: check for modified version file
+        id: git-check
+        run: echo ::set-output name=modified::$(if git status | grep "nothing to commit"; then echo "false"; else echo "true"; fi)
+      - name: stage, commit & push version file
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git add .
+          git commit -m "update version ${{ github.base_ref }}"
+          git push
