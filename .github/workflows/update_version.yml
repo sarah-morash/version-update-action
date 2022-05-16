@@ -20,7 +20,7 @@ jobs:
         id: regex-match
         with:
           text: ${{ github.base_ref }}
-          regex: 'test/(*)'
+          regex: '^test/(.*)'
       - uses: 1arp/create-a-file-action@0.2
         with:
           path: '/'
