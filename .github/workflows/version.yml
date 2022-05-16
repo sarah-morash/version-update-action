@@ -16,7 +16,7 @@ jobs:
         with:
           path: '/'
           file: 'VERSION'
-          content: ${${{ github.base_ref }}:5}
+          content: "${${{ github.base_ref }}:5}"
       - name: setup git config
         run: |
           git config user.name "GitHub Actions Bot"
