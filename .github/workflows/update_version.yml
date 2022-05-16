@@ -9,6 +9,7 @@ jobs:
     name: update version file with latest version based on branch name
     runs-on: ubuntu-latest
     steps:
+      - name: checkout head branch
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
@@ -16,11 +17,17 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
+      - name: get branch name and capture version number
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.base_ref }}
+          regex: 'test/(*)'
       - uses: 1arp/create-a-file-action@0.2
         with:
           path: '/'
           file: 'VERSION'
-          content: ${{ github.base_ref }}
+          content: ${{ steps.regex-match.outputs.group1 }}
       - name: check for modified version file
         id: git-check
         run: echo ::set-output name=modified::$(if git status | grep "nothing to commit"; then echo "false"; else echo "true"; fi)
