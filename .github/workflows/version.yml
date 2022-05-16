@@ -9,7 +9,9 @@ jobs:
     name: Create Version File
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
       - uses: 1arp/create-a-file-action@0.2
         with:
           path: '/'
