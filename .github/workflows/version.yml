@@ -16,7 +16,7 @@ jobs:
         with:
           path: '/'
           file: 'VERSION'
-          content: echo ${{ github.base_ref//test/// }}
+          content: ${{ github.base_ref//test// }}
       - name: setup git config
         run: |
           git config user.name "GitHub Actions Bot"
